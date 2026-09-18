@@ -353,53 +353,7 @@ body{background:var(--cream2)}
   .links a{padding:8px 11px;font-size:11px;}
 }
 </style>
-
-<style id="osis-prank-style">
-#osisPrankOverlay{
-  position:fixed; inset:0; z-index:999999;
-  display:none; align-items:center; justify-content:center;
-  padding:22px; background:
-    radial-gradient(circle at 50% 20%, rgba(216,182,83,.16), transparent 32%),
-    linear-gradient(145deg,#021f17 0%,#043d2d 58%,#01160f 100%);
-  color:#fffdf8; font-family:Inter,Segoe UI,Arial,sans-serif;
-}
-#osisPrankOverlay.show{display:flex}
-.prank-card{
-  width:min(620px,100%); text-align:center;
-  border:1px solid rgba(216,182,83,.45); border-radius:28px;
-  padding:38px 24px 30px; background:rgba(2,31,23,.78);
-  box-shadow:0 30px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
-  animation:prankIn .5s ease-out;
-}
-.prank-badge{
-  display:inline-flex; padding:7px 13px; border-radius:999px;
-  border:1px solid rgba(216,182,83,.45); color:#d8b653;
-  font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
-}
-.prank-card h2{font-size:clamp(30px,7vw,52px); line-height:1.05; margin:20px 0 10px}
-.prank-card h2 span{color:#d8b653}
-.prank-card p{margin:8px auto; max-width:500px; color:#dbe7e1; line-height:1.65}
-.prank-warning{font-size:14px; color:#fff; margin-top:18px}
-.prank-loader{
-  width:58px;height:58px;margin:24px auto 18px;border-radius:50%;
-  border:4px solid rgba(255,255,255,.16);border-top-color:#d8b653;
-  animation:spin 1s linear infinite;
-}
-.prank-reveal{
-  display:none; margin-top:18px; padding:14px 16px; border-radius:16px;
-  background:rgba(216,182,83,.12); border:1px solid rgba(216,182,83,.28);
-}
-.prank-reveal strong{color:#d8b653}
-.prank-btn{
-  margin-top:20px; border:0; cursor:pointer; border-radius:13px;
-  padding:12px 18px; font-weight:800; background:#d8b653; color:#043d2d;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes prankIn{from{opacity:0;transform:scale(.96) translateY(12px)}to{opacity:1;transform:none}}
-@media(max-width:480px){.prank-card{padding:30px 18px 24px}.prank-card h2{font-size:34px}}
-</style>
-
-</head>
+<style id="welcome-osis-style">#welcomeOverlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(2,25,17,.72);backdrop-filter:blur(10px);padding:20px}#welcomeCard{width:min(520px,94vw);background:linear-gradient(145deg,#fffdf7,#f6f1df);border:1px solid rgba(185,145,52,.45);border-radius:26px;padding:38px 30px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.28)}#welcomeMark{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:#064e3b;color:#d7b45a;font-size:30px}.welcome-kicker{font-size:11px;letter-spacing:.22em;font-weight:800;color:#8b6a24;margin-bottom:10px}.welcome-year{color:#8b6a24;font-size:13px;font-weight:700;margin-bottom:24px}#welcomeCard h2{margin:0;color:#064e3b;font-size:clamp(25px,5vw,38px)}#welcomeBtn{border:0;border-radius:999px;padding:13px 26px;background:#064e3b;color:#fffdf7;font-weight:800;cursor:pointer}</style></head>
 <body>
 
 <div id="public">
@@ -504,7 +458,7 @@ body{background:var(--cream2)}
 </div>
 <div id="statusOpen" class="statusGrid" style="display:none">
 <div class="status"><div class="kicker" style="color:#e8d28a">LAYANAN SISWA</div><h2>🔎 Cek Status Seleksi</h2><p>Masukkan nama dan kelas untuk mengetahui hasil seleksi.</p>
-<div class="field"><input id="checkName" placeholder="Masukkan nama siswa"></div><div class="field"><select id="checkClass"><option value="">Pilih kelas</option><option>7A</option><option>7B</option><option>8A</option><option>8B</option><option>9A</option><option>10A</option><option>10B</option><option>11A</option><option>11B</option><option>12A</option></select></div>
+<div class="field"><input id="checkName" placeholder="Masukkan nama siswa"></div><div class="field"><select id="checkClass"><option value="">Pilih kelas</option><option>7A</option><option>8A</option><option>9A</option><option>10A</option><option>10B</option><option>11A</option><option>12A</option></select></div>
 <button class="btn gold" style="width:100%" onclick="checkStatus()">CEK HASIL</button><div class="result" id="result">
       <div class="resultIdle">Masukkan nama dan kelas sesuai data pendaftaran.</div>
     </div></div>
@@ -873,11 +827,11 @@ renderAdmin();renderGallery();
 (function(){
   const pages = ["home","pengumuman","kegiatan","cek-status","tentang"];
 
-  // Pengumuman resmi: 17 September 2026 pukul 20.00 WIB.
-  // Setelah waktu ini tercapai, akses tetap terbuka dan tidak mengulang ke hari berikutnya.
   function isAnnouncementOpen(){
-    const releaseTime = Date.UTC(2026, 8, 17, 13, 0, 0); // 20.00 WIB
-    return Date.now() >= releaseTime;
+    const parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Jakarta",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const h=Number(parts.find(x=>x.type==="hour")?.value||0);
+    const m=Number(parts.find(x=>x.type==="minute")?.value||0);
+    return h>20 || (h===20 && m>=0);
   }
 
   function showPage(page, updateHash=true){
@@ -928,10 +882,12 @@ renderAdmin();renderGallery();
     const get=t=>Number(parts.find(x=>x.type===t)?.value||0);
     return {year:get("year"),month:get("month"),day:get("day"),hour:get("hour"),minute:get("minute"),second:get("second")};
   }
-  // Satu kali rilis: 17 September 2026, 20.00 WIB (UTC+7).
-  // Jangan memindahkan target ke hari berikutnya setelah 20.00.
   function getTarget(){
-    return Date.UTC(2026, 8, 17, 13, 0, 0);
+    const n=jakartaNow();
+    let targetUtc=Date.UTC(n.year,n.month-1,n.day,13,0,0);
+    const now=Date.now();
+    if(now>=targetUtc) targetUtc+=86400000;
+    return targetUtc;
   }
   let target=getTarget();
 
@@ -998,58 +954,5 @@ function sendAspiration(){
 </script>
 
 <script>applyHeaderFooter();</script>
-
-<div id="osisPrankOverlay" aria-hidden="true">
-  <div class="prank-card">
-    <div class="prank-badge">⚠️ PEMBERITAHUAN SISTEM</div>
-    <h2>ANDA <span>TERLAMBAT.</span></h2>
-    <p class="prank-warning">Hasil seleksi sudah dibuka. Karena Anda terlalu lama membuka halaman ini, sistem sedang memastikan akses Anda...</p>
-    <div class="prank-loader"></div>
-    <p id="prankStatus">Memverifikasi akses calon pengurus OSIS...</p>
-    <div class="prank-reveal" id="prankReveal">
-      😎 <strong>TENANG.</strong> Jangan panik. Ini cuma prank dari Pembina OSIS.
-      <br>Silakan lanjut cek hasil seleksi dengan tenang.
-    </div>
-    <button class="prank-btn" id="prankContinue" style="display:none">LANJUT CEK HASIL</button>
-  </div>
-</div>
-
-<script id="osis-prank-script">
-(function(){
-  const overlay=document.getElementById('osisPrankOverlay');
-  const status=document.getElementById('prankStatus');
-  const reveal=document.getElementById('prankReveal');
-  const btn=document.getElementById('prankContinue');
-
-  function showPrank(){
-    if(!overlay) return;
-    overlay.classList.add('show');
-    overlay.setAttribute('aria-hidden','false');
-    status.textContent='Memverifikasi akses calon pengurus OSIS...';
-    reveal.style.display='none';
-    btn.style.display='none';
-
-    setTimeout(()=>{ status.textContent='Mengecek waktu akses...'; },900);
-    setTimeout(()=>{ status.textContent='Mengecek status calon pengurus...'; },1800);
-    setTimeout(()=>{
-      status.textContent='⚠️ Akses berhasil diverifikasi.';
-      reveal.style.display='block';
-      btn.style.display='inline-block';
-    },2900);
-  }
-
-  btn && btn.addEventListener('click',()=>{
-    overlay.classList.remove('show');
-    overlay.setAttribute('aria-hidden','true');
-  });
-
-  // Prank hanya sekali per perangkat, agar tidak mengganggu siswa setiap kali membuka.
-  if(!sessionStorage.getItem('osisPrankShown')){
-    sessionStorage.setItem('osisPrankShown','1');
-    setTimeout(showPrank,700);
-  }
-})();
-</script>
-
-</body>
+<div id="welcomeOverlay"><div id="welcomeCard"><div id="welcomeMark">✦</div><div class="welcome-kicker">PORTAL RESMI</div><h2>SELAMAT DATANG</h2><div style="margin:8px 0 4px;color:#26372f;font-size:16px;font-weight:700">PORTAL OSIS SAIS SCHOOL</div><div class="welcome-year">Tahun Ajaran 2026/2027</div><button id="welcomeBtn" type="button">MASUK KE PORTAL →</button></div></div><script>(function(){const o=document.getElementById('welcomeOverlay'),b=document.getElementById('welcomeBtn');if(sessionStorage.getItem('osisWelcomeSeen')==='1')o.remove();b.onclick=()=>{sessionStorage.setItem('osisWelcomeSeen','1');o.remove()}})();</script></body>
 </html>
